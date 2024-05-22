@@ -7,6 +7,7 @@ use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +60,11 @@ class BlogController extends Controller
    public function update(Post $post,FormPostRequest $request){
       {
          $data= $request->validated();
-         dd($data);
+         /** @var UploadedFile|null $image */
+         $image= $request->validated('image');
+         if($image !== null && !$image->getError()){
+            $data['image']=$image->store('blog','public');
+         }
          $post->update($data);
          $post->tags()->sync($request->validated('tags'));
          return redirect()->route('blog.show',['slug'=>$post->slug,'post'=>$post->id])->with('success',"L'article a bien été modifié");
