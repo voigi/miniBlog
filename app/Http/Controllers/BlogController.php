@@ -17,6 +17,7 @@ class BlogController extends Controller
    public function index(): View
    {
 
+  
     
      $post=Post::find(6);
 
@@ -38,7 +39,7 @@ class BlogController extends Controller
      return view('blog.create',[
       'post'=> $post ,
       'categories'=>Category::select('id','name')->get(),
-            'tags'=>Tag::select('id','name')->get()
+      'tags'=>Tag::select('id','name')->get()
      ]); 
    
    }
